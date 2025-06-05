@@ -20,8 +20,9 @@ public class CartItemDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public void clearCart(int cartId) {
+    public void clearCart() {
         String sql = "DELETE FROM CartItems WHERE CartID = ?";
+        Object cartId = new Object();
         jdbcTemplate.update(sql, cartId);
     }
 

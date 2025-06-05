@@ -58,14 +58,19 @@ public class ShoppingCartService {
         cartItemDAO.deleteCartItem(cartItemId);
     }
 
-    public void clearCart(int cartId) {
-        cartItemDAO.deleteCartItembyCartID(cartId);
+    public void clearCart() {
+        Integer cartId = null;
+        cartItemDAO.deleteCartItembyCartID(null);
     }
 
     public double calculateCartTotal(int cartId) {
         List<CartItem> items = getCartItems(cartId);
         return items.stream()
-                .mapToDouble(item -> item.getFinalPrice())
+                .mapToDouble(CartItem::getFinalPrice)
                 .sum();
+    }
+
+    public List<CartItem> getCartItemList() {
+        return null;
     }
 }
