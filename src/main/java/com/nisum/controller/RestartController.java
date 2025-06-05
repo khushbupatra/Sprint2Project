@@ -2,6 +2,7 @@ package com.nisum.controller;
 
 import com.nisum.dao.CartItemDAO;
 import com.nisum.service.ShoppingCartService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,13 +14,17 @@ import java.io.IOException;
 @RequestMapping("/Restart")
 public class RestartController {
 
-    private final CartItemDAO cartItemDAO = new CartItemDAO();
-    private final ShoppingCartService shoppingCartService = new ShoppingCartService();
+    @Autowired
+    private CartItemDAO cartItemDAO;
+
+    @Autowired
+    private ShoppingCartService shoppingCartService;
 
     @GetMapping
     public void restart(HttpServletResponse response) throws IOException {
         cartItemDAO.clearCart();
         shoppingCartService.clearCart();
+        response.setContentType("text/plain");
         response.getWriter().write("Restarted Successfully");
     }
 }

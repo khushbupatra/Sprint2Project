@@ -3,6 +3,7 @@ package com.nisum.controller;
 import com.google.gson.Gson;
 import com.nisum.dao.UserAddressDAO;
 import com.nisum.model.UserAddress;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +16,8 @@ import java.util.List;
 @RequestMapping("/UserAddress")
 public class UserAddressController {
 
-    private final UserAddressDAO userAddressDAO = new UserAddressDAO();
+    @Autowired
+    private UserAddressDAO userAddressDAO;
 
     @GetMapping
     public void getUserAddresses(HttpServletResponse response) throws IOException {

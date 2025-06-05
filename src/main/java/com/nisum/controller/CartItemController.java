@@ -31,7 +31,7 @@ public class CartItemController {
     @GetMapping("/items")
     @ResponseBody
     public String getAllCartItems(HttpServletResponse response) throws IOException {
-        ArrayList<CartItem> cartItemList = cartItemDAO.getAllCartItems();
+        ArrayList<CartItem> cartItemList = (ArrayList<CartItem>) cartItemDAO.getAllCartItems();
         String json = new Gson().toJson(cartItemList);
         response.setContentType("application/json");
         return json;

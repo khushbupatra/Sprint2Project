@@ -13,12 +13,19 @@ import java.util.List;
 @Repository
 public class CartItemDAO {
 
-    private final JdbcTemplate jdbcTemplate;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Autowired
     public CartItemDAO(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
+
+    public void clearCart() {
+        String sql = "DELETE FROM cart_items"; // or your table name
+        jdbcTemplate.update(sql);
+    }
+
 
     private static class CartItemRowMapper implements RowMapper<CartItem> {
         @Override

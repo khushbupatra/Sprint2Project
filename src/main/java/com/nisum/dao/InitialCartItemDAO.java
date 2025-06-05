@@ -20,9 +20,11 @@ public class InitialCartItemDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    public List<CartItem> getAllInitialCartItems() {
 
-    //    public List<CartItem> getAllInitialCartItems() {
-//    }
+        return null;
+    }
+
 
     private static class CartItemRowMapper implements RowMapper<CartItem> {
         @Override
