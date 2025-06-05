@@ -1,0 +1,83 @@
+package com.nisum.dao;
+
+import com.nisum.model.UserAddress;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
+import javax.sql.DataSource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
+@Repository
+public class UserAddressDAO {
+    private final JdbcTemplate jdbcTemplate;
+
+    public UserAddressDAO(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    }
+
+    public void addAddress(UserAddress userAddress) {
+        String sql = "INSERT INTO UserAddresses (AddressID, UserID, AddressLine1, AddressLine2, ZipCode, State, Country) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql,
+                userAddress.getAddressId(),
+                userAddress.getUserId(),
+                userAddress.getAddressLine1(),
+                userAddress.getAddressLine2(),
+                userAddress.getZipcode(),
+                userAddress.getState(),
+                userAddress.getCountry());
+    }
+
+    public UserAddress getAddressById(Integer id) {
+        String sql = "SELECT * FROM UserAddresses WHERE AddressID = ?";
+        return jdbcTemplate.queryForObject(sql, new UserAddressRowMapper(), id);
+    }
+
+    public List<UserAddress> getAddressesByUserId(Integer userId) {
+        String sql = "SELECT * FROM UserAddresses WHERE UserID = ?";
+        return jdbcTemplate.query(sql, new UserAddressRowMapper(), userId);
+    }
+
+    public List<UserAddress> getAllAddresses() {
+        String sql = "SELECT * FROM UserAddresses";
+        return jdbcTemplate.query(sql, new UserAddressRowMapper());
+    }
+
+    public void updateAddress(UserAddress userAddress) {
+        String sql = "UPDATE UserAddresses SET UserID = ?, AddressLine1 = ?, AddressLine2 = ?, ZipCode = ?, State = ?, Country = ? WHERE AddressID = ?";
+        jdbcTemplate.update(sql,
+                userAddress.getUserId(),
+                userAddress.getAddressLine1(),
+                userAddress.getAddressLine2(),
+                userAddress.getZipcode(),
+                userAddress.getState(),
+                userAddress.getCountry(),
+                userAddress.getAddressId());
+    }
+
+    public void deleteAddress(Integer addressId) {
+        String sql = "DELETE FROM UserAddresses WHERE AddressID = ?";
+        jdbcTemplate.update(sql, addressId);
+    }
+
+    public void deleteAddressesByUserId(Integer userId) {
+        String sql = "DELETE FROM UserAddresses WHERE UserID = ?";
+        jdbcTemplate.update(sql, userId);
+    }
+
+    private static class UserAddressRowMapper implements RowMapper<UserAddress> {
+        @Override
+        public UserAddress mapRow(ResultSet rs, int rowNum) throws SQLException {
+            UserAddress userAddress = new UserAddress();
+            userAddress.setAddressId(rs.getInt("AddressID"));
+            userAddress.setUserId(rs.getInt("UserID"));
+            userAddress.setAddressLine1(rs.getString("AddressLine1"));
+            userAddress.setAddressLine2(rs.getString("AddressLine2"));
+            userAddress.setZipcode(rs.getString("ZipCode"));
+            userAddress.setState(rs.getString("State"));
+            userAddress.setCountry(rs.getString("Country"));
+            return userAddress;
+        }
+    }
+}
