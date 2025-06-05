@@ -13,19 +13,49 @@ import java.util.List;
 @Repository
 public class CartItemDAO {
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     @Autowired
     public CartItemDAO(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public void clearCart() {
-        String sql = "DELETE FROM cart_items"; // or your table name
-        jdbcTemplate.update(sql);
+    public void clearCart(int cartId) {
+        String sql = "DELETE FROM CartItems WHERE CartID = ?";
+        jdbcTemplate.update(sql, cartId);
     }
 
+    public void updateCartItemQuantity(int cartItemId, int quantity) {
+        String sql = "UPDATE CartItems SET Quantity = ? WHERE CartItemID = ?";
+        jdbcTemplate.update(sql, quantity, cartItemId);
+    }
+
+    public void removeItemFromCart(int cartItemId) {
+        String sql = "DELETE FROM CartItems WHERE CartItemID = ?";
+        jdbcTemplate.update(sql, cartItemId);
+    }
+
+    public void addItemToCart(CartItem newItem) {
+        String sql = "INSERT INTO CartItems (CartID, ProductID, Quantity, UnitPrice, FinalPrice) " +
+                "VALUES (?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql,
+                newItem.getCartID(),
+                newItem.getProductID(),
+                newItem.getQuantity(),
+                newItem.getUnitPrice(),
+                newItem.getFinalPrice());
+    }
+
+    public List<CartItem> getCartItems(int cartId) {
+        String sql = "SELECT * FROM CartItems WHERE CartID = ?";
+        return jdbcTemplate.query(sql, new CartItemRowMapper(), cartId);
+    }
+
+    public CartItem findCartItemByProduct(int cartId, int productId) {
+        String sql = "SELECT * FROM CartItems WHERE CartID = ? AND ProductID = ?";
+        List<CartItem> items = jdbcTemplate.query(sql, new CartItemRowMapper(), cartId, productId);
+        return items.isEmpty() ? null : items.get(0);
+    }
 
     private static class CartItemRowMapper implements RowMapper<CartItem> {
         @Override
