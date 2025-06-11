@@ -1,7 +1,6 @@
 package com.nisum.dao;
 
 import com.nisum.model.CartItem;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -13,42 +12,23 @@ import java.util.List;
 @Repository
 public class InitialCartItemDAO {
 
-    private final JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
 
-    @Autowired
-    public InitialCartItemDAO(JdbcTemplate jdbcTemplate) {
+    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     public List<CartItem> getAllInitialCartItems() {
-
-        return null;
-    }
-
-
-    private static class CartItemRowMapper implements RowMapper<CartItem> {
-        @Override
-        public CartItem mapRow(ResultSet rs, int rowNum) throws SQLException {
-            CartItem cartItem = new CartItem();
-            cartItem.setCartItemID(rs.getInt("CartItemID"));
-            cartItem.setCartID(rs.getInt("CartID"));
-            cartItem.setProductID(rs.getInt("ProductID"));
-            cartItem.setSku(rs.getString("SKU"));
-            cartItem.setQuantity(rs.getInt("Quantity"));
-            cartItem.setUnitPrice(rs.getDouble("UnitPrice"));
-            cartItem.setDiscount(rs.getDouble("Discount"));
-            cartItem.setFinalPrice(rs.getDouble("FinalPrice"));
-            return cartItem;
-        }
+        String query = "SELECT * FROM InitialCartItems";
+        return jdbcTemplate.query(query, new CartItemRowMapper());
     }
 
     public void addItems(CartItem cartItem) {
-        String query = "INSERT INTO InitialCartItems (CartItemID, CartID, ProductID, SKU, Quantity, UnitPrice, Discount, FinalPrice) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO InitialCartItems (CartItemID, CartID, ProductID, Quantity, UnitPrice, Discount, FinalPrice) VALUES (?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(query,
-                cartItem.getCartItemID(),
-                cartItem.getCartID(),
-                cartItem.getProductID(),
-                cartItem.getSku(),
+                cartItem.getCartItemId(),
+                cartItem.getCartId(),
+                cartItem.getProductId(),
                 cartItem.getQuantity(),
                 cartItem.getUnitPrice(),
                 cartItem.getDiscount(),
@@ -66,22 +46,16 @@ public class InitialCartItemDAO {
         return jdbcTemplate.query(query, new CartItemRowMapper(), id);
     }
 
-    public List<CartItem> getAllCartItems() {
-        String query = "SELECT * FROM InitialCartItems";
-        return jdbcTemplate.query(query, new CartItemRowMapper());
-    }
-
     public void updateCartItem(CartItem cartItem) {
-        String query = "UPDATE InitialCartItems SET CartID = ?, ProductID = ?, SKU = ?, Quantity = ?, UnitPrice = ?, Discount = ?, FinalPrice = ? WHERE CartItemID = ?";
+        String query = "UPDATE InitialCartItems SET CartID = ?, ProductID = ?, Quantity = ?, UnitPrice = ?, Discount = ?, FinalPrice = ? WHERE CartItemID = ?";
         jdbcTemplate.update(query,
-                cartItem.getCartID(),
-                cartItem.getProductID(),
-                cartItem.getSku(),
+                cartItem.getCartId(),
+                cartItem.getProductId(),
                 cartItem.getQuantity(),
                 cartItem.getUnitPrice(),
                 cartItem.getDiscount(),
                 cartItem.getFinalPrice(),
-                cartItem.getCartItemID());
+                cartItem.getCartItemId());
     }
 
     public void deleteCartItem(Integer cartItemID) {
@@ -92,5 +66,25 @@ public class InitialCartItemDAO {
     public void deleteCartItembyCartID(Integer cartID) {
         String query = "DELETE FROM InitialCartItems WHERE CartID = ?";
         jdbcTemplate.update(query, cartID);
+    }
+
+    public void clearCart() {
+        String query = "TRUNCATE TABLE InitialCartItems";
+        jdbcTemplate.execute(query);
+    }
+
+    private static class CartItemRowMapper implements RowMapper<CartItem> {
+        @Override
+        public CartItem mapRow(ResultSet rs, int rowNum) throws SQLException {
+            CartItem cartItem = new CartItem();
+            cartItem.setCartItemId(rs.getInt("CartItemID"));
+            cartItem.setCartId(rs.getInt("CartID"));
+            cartItem.setProductId(rs.getInt("ProductID"));
+            cartItem.setQuantity(rs.getInt("Quantity"));
+            cartItem.setUnitPrice(rs.getDouble("UnitPrice"));
+            cartItem.setDiscount(rs.getDouble("Discount"));
+            cartItem.setFinalPrice(rs.getDouble("FinalPrice"));
+            return cartItem;
+        }
     }
 }

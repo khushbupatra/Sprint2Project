@@ -22,7 +22,6 @@ public class RestartController {
 
     @GetMapping
     public void restart(HttpServletResponse response) throws IOException {
-        cartItemDAO.clearCart();
         shoppingCartService.clearCart();
         response.setContentType("text/plain");
         response.getWriter().write("Restarted Successfully");

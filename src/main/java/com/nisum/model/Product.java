@@ -5,17 +5,18 @@ public class Product {
     private String name;
     private String description;
     private double price;
-    private String sku;
 
-    public Product() {}
 
     public Product(Integer productID, String name, String description,
-                   double price, String sku) {
+                   double price, String sku, String imageUrl) {
         this.productID = productID;
         this.name = name;
         this.description = description;
         this.price = price;
-        this.sku = sku;
+    }
+
+    public Product() {
+
     }
 
     public Integer getProductID() {
@@ -50,11 +51,5 @@ public class Product {
         this.price = price;
     }
 
-    public String getSku() {
-        return sku;
-    }
 
-    public void setSku(String sku) {
-        this.sku = sku;
-    }
 }

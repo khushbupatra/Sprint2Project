@@ -1,11 +1,11 @@
 package com.nisum.dao;
 
 import com.nisum.model.ShoppingCart;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -15,9 +15,9 @@ public class ShoppingCartDAO {
 
     private final JdbcTemplate jdbcTemplate;
 
-    // Constructor Injection of DataSource
-    public ShoppingCartDAO(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    @Autowired
+    public ShoppingCartDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     public void addShoppingCart(ShoppingCart shoppingCart) {
@@ -71,7 +71,6 @@ public class ShoppingCartDAO {
         jdbcTemplate.execute(sql);
     }
 
-    // RowMapper for mapping ResultSet to ShoppingCart object
     private static class ShoppingCartRowMapper implements RowMapper<ShoppingCart> {
         @Override
         public ShoppingCart mapRow(ResultSet rs, int rowNum) throws SQLException {

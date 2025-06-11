@@ -1,56 +1,64 @@
-.mainheading{
-    color: rgb(108, 169, 16);
-    font-size: 25px;
-    text-align: center;
-}
-.mainheadingtext{
-    color: rgb(142, 138, 138);
-    font-size:20px;
-    text-align: center;
-}
-h2{
-    font-size: 23px;
+.page.style {
+    font-family: 'Arial', sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    color: #333;
 }
 
-.order,.instructions,.rewards,.email-confirmation{
-    background-color: rgb(245, 242, 242);
+.main.heading {
+    color: #2e7d32;
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.mainheadingtext {
+    text-align: center;
+    font-size: 16px;
+    margin-bottom: 30px;
+    color: #555;
+}
+
+section {
+    margin: 25px 0;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+section h2 {
+    color: #2e7d32;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.instructions, .rewards, .email-confirmation {
+    margin: 15px 0;
     padding: 10px;
-    padding-top: 15px;
-    padding-bottom: 15px;
-    box-shadow: 1px 1px 1px rgb(0 0 0 / 0.3);
-
-}
-p,h3{
-    padding: 0;
-    margin: 0;
-}
-h3{
-    font-size: 18px;
+    background-color: #fff;
+    border-left: 4px solid #2e7d32;
 }
 
-.rewards{
-    background-color: rgb(194, 237, 194);
-}
-#checkout{
+#checkout {
     text-align: center;
-    margin: 30px;
-}
-button{
-    background-color: #ff2d75;
-    box-shadow: 0px 1px 1px rgb(0 0 0 / 0.3);
-    border-radius: 5px;
-    padding: 5px;
-    border: 0;
-    font-size: 17px;
-}
-body{
-    padding-top: 0px;
-    padding-left: 50px;
-    padding-right: 50px;
-
+    margin-top: 30px;
 }
 
-body{
-    background-color: #fdfdfd;
+#checkout button {
+    background-color: #2e7d32;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    margin: 0 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
 
+#checkout button:hover {
+    background-color: #1b5e20;
 }

@@ -1,66 +1,43 @@
 package com.nisum.model;
 
 public class CartItem {
-    private Integer cartItemID;
-    private Integer cartID;
-    private Integer productID;
-    private Product product;
+    private Integer cartItemId;
+    private Integer cartId;
+    private Integer productId;
     private Integer quantity;
-    private double discount;
-    private double finalPrice;
-    private double unitPrice;
-    private String sku;
+    private Double unitPrice;
+    private Double discount;
+    private Double finalPrice;
 
-    public CartItem() {
+    private Product product;
+
+    public Integer getCartItemId() {
+
+        return cartItemId;
     }
 
-    public CartItem(Integer cartItemID, Integer cartID, Integer productID, Integer quantity,
-                    double discount, double finalPrice, double unitPrice, String sku) {
-        this.cartItemID = cartItemID;
-        this.cartID = cartID;
-        this.productID = productID;
-        this.quantity = quantity;
-        this.discount = discount;
-        this.finalPrice = finalPrice;
-        this.unitPrice = unitPrice;
-        this.sku = sku;
+    public void setCartItemId(Integer cartItemId) {
+
+        this.cartItemId = cartItemId;
     }
 
-    // Getters and Setters
-    public Integer getCartItemID() {
-        return cartItemID;
+    public Integer getCartId() {
+
+        return cartId;
     }
 
-    public void setCartItemID(Integer cartItemID) {
-        this.cartItemID = cartItemID;
+    public void setCartId(Integer cartId) {
+
+        this.cartId = cartId;
     }
 
-    public Integer getCartID() {
-        return cartID;
+    public Integer getProductId() {
+
+        return productId;
     }
 
-    public void setCartID(Integer cartID) {
-        this.cartID = cartID;
-    }
-
-    public Integer getProductID() {
-        return productID;
-    }
-
-    public void setProductID(Integer productID) {
-        this.productID = productID;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-        if (product != null) {
-            this.productID = product.getProductID();
-            this.sku = product.getSku();
-        }
+    public void setProductId(Integer productId) {
+        this.productId = productId;
     }
 
     public Integer getQuantity() {
@@ -71,41 +48,36 @@ public class CartItem {
         this.quantity = quantity;
     }
 
-    public double getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(double discount) {
-        this.discount = discount;
-    }
-
-    public double getFinalPrice() {
-        return finalPrice;
-    }
-
-    public void setFinalPrice(double finalPrice) {
-        this.finalPrice = finalPrice;
-    }
-
-    public double getUnitPrice() {
+    public Double getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(double unitPrice) {
+    public void setUnitPrice(Double unitPrice) {
         this.unitPrice = unitPrice;
     }
 
-    public String getSku() {
-        return sku;
+    public Double getDiscount() {
+        return discount;
     }
 
-    public void setSku(String sku) {
-        this.sku = sku;
+    public void setDiscount(Double discount) {
+        this.discount = discount;
     }
 
-    public void calculateFinalPrice() {
-        if (unitPrice > 0 && quantity > 0) {
-            this.finalPrice = (unitPrice * quantity) - discount;
-        }
+    public Double getFinalPrice() {
+        return finalPrice;
+    }
+
+    public void setFinalPrice(Double finalPrice) {
+        this.finalPrice = finalPrice;
+    }
+
+    public Product getProduct() {
+
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 }

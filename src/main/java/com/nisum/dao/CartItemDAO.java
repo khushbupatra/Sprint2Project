@@ -2,12 +2,10 @@ package com.nisum.dao;
 
 import com.nisum.model.CartItem;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 @Repository
@@ -20,114 +18,47 @@ public class CartItemDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public void clearCart() {
-        String sql = "DELETE FROM CartItems WHERE CartID = ?";
-        Object cartId = new Object();
-        jdbcTemplate.update(sql, cartId);
-    }
-
-    public void updateCartItemQuantity(int cartItemId, int quantity) {
-        String sql = "UPDATE CartItems SET Quantity = ? WHERE CartItemID = ?";
-        jdbcTemplate.update(sql, quantity, cartItemId);
-    }
-
-    public void removeItemFromCart(int cartItemId) {
-        String sql = "DELETE FROM CartItems WHERE CartItemID = ?";
-        jdbcTemplate.update(sql, cartItemId);
-    }
-
-    public void addItemToCart(CartItem newItem) {
-        String sql = "INSERT INTO CartItems (CartID, ProductID, Quantity, UnitPrice, FinalPrice) " +
-                "VALUES (?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql,
-                newItem.getCartID(),
-                newItem.getProductID(),
-                newItem.getQuantity(),
-                newItem.getUnitPrice(),
-                newItem.getFinalPrice());
-    }
-
-    public List<CartItem> getCartItems(int cartId) {
-        String sql = "SELECT * FROM CartItems WHERE CartID = ?";
-        return jdbcTemplate.query(sql, new CartItemRowMapper(), cartId);
-    }
-
-    public CartItem findCartItemByProduct(int cartId, int productId) {
-        String sql = "SELECT * FROM CartItems WHERE CartID = ? AND ProductID = ?";
-        List<CartItem> items = jdbcTemplate.query(sql, new CartItemRowMapper(), cartId, productId);
-        return items.isEmpty() ? null : items.get(0);
-    }
-
-    private static class CartItemRowMapper implements RowMapper<CartItem> {
-        @Override
-        public CartItem mapRow(ResultSet rs, int rowNum) throws SQLException {
-            CartItem cartItem = new CartItem();
-            cartItem.setCartItemID(rs.getInt("CartItemID"));
-            cartItem.setCartID(rs.getInt("CartID"));
-            cartItem.setProductID(rs.getInt("ProductID"));
-            cartItem.setSku(rs.getString("SKU"));
-            cartItem.setQuantity(rs.getInt("Quantity"));
-            cartItem.setUnitPrice(rs.getDouble("UnitPrice"));
-            cartItem.setDiscount(rs.getDouble("Discount"));
-            cartItem.setFinalPrice(rs.getDouble("FinalPrice"));
-            return cartItem;
-        }
-    }
-
     public void addItems(CartItem cartItem) {
-        String query = "INSERT INTO CartItems (CartItemID, CartID, ProductID, SKU, Quantity, UnitPrice, Discount, FinalPrice) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        jdbcTemplate.update(query,
-                cartItem.getCartItemID(),
-                cartItem.getCartID(),
-                cartItem.getProductID(),
-                cartItem.getSku(),
-                cartItem.getQuantity(),
-                cartItem.getUnitPrice(),
-                cartItem.getDiscount(),
-                cartItem.getFinalPrice());
-    }
-
-    public CartItem getCartItemByCartItemID(Integer id) {
-        String query = "SELECT * FROM CartItems WHERE CartItemID = ?";
-        List<CartItem> items = jdbcTemplate.query(query, new CartItemRowMapper(), id);
-        return items.isEmpty() ? null : items.get(0);
-    }
-
-    public List<CartItem> getCartItemsByCartID(Integer id) {
-        String query = "SELECT * FROM CartItems WHERE CartID = ?";
-        return jdbcTemplate.query(query, new CartItemRowMapper(), id);
+        String sql = "INSERT INTO cart_items (cart_id, product_id, quantity) VALUES (?, ?, ?)";
+        jdbcTemplate.update(sql,
+                cartItem.getCartId(),
+                cartItem.getProductId(),
+                cartItem.getQuantity());
     }
 
     public List<CartItem> getAllCartItems() {
-        String query = "SELECT * FROM CartItems";
-        return jdbcTemplate.query(query, new CartItemRowMapper());
+        String sql = "SELECT cart_item_id AS cartItemId, cart_id AS cartId, product_id AS productId, quantity FROM cart_items";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(CartItem.class));
     }
 
-    public void updateCartItem(CartItem cartItem) {
-        String query = "UPDATE CartItems SET CartID = ?, ProductID = ?, SKU = ?, Quantity = ?, UnitPrice = ?, Discount = ?, FinalPrice = ? WHERE CartItemID = ?";
-        jdbcTemplate.update(query,
-                cartItem.getCartID(),
-                cartItem.getProductID(),
-                cartItem.getSku(),
-                cartItem.getQuantity(),
-                cartItem.getUnitPrice(),
-                cartItem.getDiscount(),
-                cartItem.getFinalPrice(),
-                cartItem.getCartItemID());
+    public List<CartItem> getCartItemsByCartID(int cartId) {
+        String sql = "SELECT cart_item_id AS cartItemId, cart_id AS cartId, product_id AS productId, quantity FROM cart_items WHERE cart_id = ?";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(CartItem.class), cartId);
     }
 
-    public void deleteCartItem(Integer cartItemID) {
-        String query = "DELETE FROM CartItems WHERE CartItemID = ?";
-        jdbcTemplate.update(query, cartItemID);
+    public CartItem findCartItemByProduct(int cartId, int productId) {
+        String sql = "SELECT cart_item_id AS cartItemId, cart_id AS cartId, product_id AS productId, quantity FROM cart_items WHERE cart_id = ? AND product_id = ?";
+        List<CartItem> items = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(CartItem.class), cartId, productId);
+        return items.isEmpty() ? null : items.get(0);
     }
 
-    public void deleteCartItembyCartID(Integer cartID) {
-        String query = "DELETE FROM CartItems WHERE CartID = ?";
-        jdbcTemplate.update(query, cartID);
+    public void updateCartItemQuantity(Integer cartItemID, int quantity) {
+        String sql = "UPDATE cart_items SET quantity = ? WHERE cart_item_id = ?";
+        jdbcTemplate.update(sql, quantity, cartItemID);
     }
 
-    public void deleteAllCartItems() {
-        String query = "TRUNCATE TABLE CartItems";
-        jdbcTemplate.execute(query);
+    public void deleteCartItem(int cartItemId) {
+        String sql = "DELETE FROM cart_items WHERE cart_item_id = ?";
+        jdbcTemplate.update(sql, cartItemId);
+    }
+
+    public void deleteCartItembyCartID(Object cartId) {
+        String sql = "DELETE FROM cart_items WHERE cart_id = ?";
+        jdbcTemplate.update(sql, cartId);
+    }
+
+    public void clearCart() {
+        String sql = "DELETE FROM cart_items";
+        jdbcTemplate.update(sql);
     }
 }

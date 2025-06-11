@@ -31,22 +31,8 @@ public class ProductDAO {
             product.setName(rs.getString("Name"));
             product.setDescription(rs.getString("Description"));
             product.setPrice(rs.getDouble("Price"));
-            product.setSku(rs.getString("SKU"));
             return product;
         }
     }
-    // Additional useful methods
-    /*
-    public List<Product> getAllProducts() {
-        String sql = "SELECT * FROM Products";
-        return jdbcTemplate.query(sql, new ProductRowMapper());
-    }
 
-    public List<Product> getProductsByIds(List<Integer> productIds) {
-        String sql = "SELECT * FROM Products WHERE ProductID IN (:ids)";
-        Map<String, Object> params = new HashMap<>();
-        params.put("ids", productIds);
-        return jdbcTemplate.query(sql, params, new ProductRowMapper());
-    }
-    */
 }

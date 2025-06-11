@@ -1,46 +1,77 @@
 body {
-    font-family: Arial, sans-serif;
-    background: #fff;
-    padding: 20px;
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f5f5;
     margin: 0;
+    padding: 20px;
+    color: #333;
 }
 
 h1 {
+    color: #2e7d32;
     text-align: center;
-    color: #000;
     margin-bottom: 30px;
 }
 
-.billing-address-box, .payment-method-box {
-    border: 1px solid #ddd;
-    padding: 15px;
+.section {
+    background-color: white;
+    padding: 20px;
+    margin-bottom: 20px;
     border-radius: 8px;
-    background-color: #fafafa;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.section h3 {
+    color: #2e7d32;
+    margin-top: 0;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.billing-address-box {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 5px;
+    margin: 15px 0;
+    border: 1px solid #ddd;
 }
 
 .promo-code {
     display: flex;
-    gap: 10px;
+    margin: 15px 0;
 }
 
 .promo-code input {
-    flex: 1;
+    flex-grow: 1;
     padding: 10px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
+    border: 1px solid #ddd;
+    border-radius: 4px 0 0 4px;
+    font-size: 14px;
 }
 
-.apply-btn {
-    background-color: #ff2d75;
+.promo-code .apply-btn {
+    background-color: #2e7d32;
     color: white;
-    padding: 10px 16px;
     border: none;
+    padding: 0 20px;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+}
+
+.payment-method-box {
+    margin: 15px 0;
+}
+
+.payment-method-box label {
+    display: block;
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #f9f9f9;
     border-radius: 4px;
     cursor: pointer;
 }
 
-.apply-btn:hover {
-    background-color: #e02368;
+.payment-method-box label:hover {
+    background-color: #f0f0f0;
 }
 
 .place-order {
@@ -49,15 +80,16 @@ h1 {
 }
 
 .place-order-btn {
-    background-color: #ff2d75;
+    background-color: #2e7d32;
     color: white;
-    padding: 12px 30px;
-    font-size: 16px;
     border: none;
-    border-radius: 6px;
+    padding: 15px 30px;
+    font-size: 16px;
+    border-radius: 4px;
     cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 .place-order-btn:hover {
-    background-color: #e02368;
+    background-color: #1b5e20;
 }
