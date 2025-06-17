@@ -25,7 +25,12 @@ public class CartItemController {
     @Autowired
     private Gson gson;
 
-    @GetMapping
+    @GetMapping("/view")
+    public String showCartPage() {
+        return "cart"; // resolves to /WEB-INF/views/cart.jsp
+    }
+
+    @GetMapping("/api")
     public void getAllCartItems(HttpServletResponse response) throws IOException {
         List<CartItem> cartItems = cartItemDAO.getAllCartItems();
         response.setContentType("application/json");
