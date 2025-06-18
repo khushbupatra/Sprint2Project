@@ -21,14 +21,19 @@ public class UserAddressDAO {
     }
 
     public void addAddress(UserAddress userAddress) {
-        String sql = "INSERT INTO UserAddresses (AddressID, UserID, AddressLine1, AddressLine2, ZipCode, State, Country) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO UserAddresses (AddressID, UserID, FullName, Phone, AddressLine1, AddressLine2, City, State, Pincode, ZipCode, Country) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql,
                 userAddress.getAddressId(),
                 userAddress.getUserId(),
+                userAddress.getFullName(),
+                userAddress.getPhone(),
                 userAddress.getAddressLine1(),
                 userAddress.getAddressLine2(),
-                userAddress.getZipcode(),
+                userAddress.getCity(),
                 userAddress.getState(),
+                userAddress.getPincode(),
+                userAddress.getZipcode(),
                 userAddress.getCountry());
     }
 
@@ -48,13 +53,18 @@ public class UserAddressDAO {
     }
 
     public void updateAddress(UserAddress userAddress) {
-        String sql = "UPDATE UserAddresses SET UserID = ?, AddressLine1 = ?, AddressLine2 = ?, ZipCode = ?, State = ?, Country = ? WHERE AddressID = ?";
+        String sql = "UPDATE UserAddresses SET UserID = ?, FullName = ?, Phone = ?, AddressLine1 = ?, AddressLine2 = ?, City = ?, State = ?, Pincode = ?, ZipCode = ?, Country = ? " +
+                "WHERE AddressID = ?";
         jdbcTemplate.update(sql,
                 userAddress.getUserId(),
+                userAddress.getFullName(),
+                userAddress.getPhone(),
                 userAddress.getAddressLine1(),
                 userAddress.getAddressLine2(),
-                userAddress.getZipcode(),
+                userAddress.getCity(),
                 userAddress.getState(),
+                userAddress.getPincode(),
+                userAddress.getZipcode(),
                 userAddress.getCountry(),
                 userAddress.getAddressId());
     }
@@ -75,10 +85,14 @@ public class UserAddressDAO {
             UserAddress userAddress = new UserAddress();
             userAddress.setAddressId(rs.getInt("AddressID"));
             userAddress.setUserId(rs.getInt("UserID"));
+            userAddress.setFullName(rs.getString("FullName"));
+            userAddress.setPhone(rs.getString("Phone"));
             userAddress.setAddressLine1(rs.getString("AddressLine1"));
             userAddress.setAddressLine2(rs.getString("AddressLine2"));
-            userAddress.setZipcode(rs.getString("ZipCode"));
+            userAddress.setCity(rs.getString("City"));
             userAddress.setState(rs.getString("State"));
+            userAddress.setPincode(rs.getString("Pincode"));
+            userAddress.setZipcode(rs.getString("ZipCode"));
             userAddress.setCountry(rs.getString("Country"));
             return userAddress;
         }

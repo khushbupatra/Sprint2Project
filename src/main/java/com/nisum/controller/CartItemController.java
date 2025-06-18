@@ -27,6 +27,7 @@ public class CartItemController {
 
     @GetMapping("/view")
     public String showCartPage() {
+
         return "cart"; // resolves to /WEB-INF/views/cart.jsp
     }
 
